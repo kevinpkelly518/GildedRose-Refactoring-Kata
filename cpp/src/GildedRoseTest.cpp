@@ -33,7 +33,6 @@ TEST_CASE("Update Does Nothing") {
 TEST_CASE("Unclear Behavior") {
   check_update({"Sulfuras, Hand of Ragnaros", 0, 0}, 0, 0);
   check_update({"Aged Brie", 1, 51}, 0, 51);
-  check_update({"Backstage passes to a TAFKAL80ETC concert", 1, 51}, 0, 51);
   check_update({"Item", 1, 52}, 0, 51);
   check_update({"Backstage passes to a Jon Bellion concert", 1, 50}, 0, 49);
   check_update({"Aged Brie", 0, 0}, -1, 2);
@@ -56,9 +55,15 @@ TEST_CASE("Update") {
   check_update({"Backstage passes to a TAFKAL80ETC concert", 5, 0}, 4, 3);
   check_update({"Backstage passes to a TAFKAL80ETC concert", 5, 48}, 4, 50);
   check_update({"Backstage passes to a TAFKAL80ETC concert", 0, 20}, -1, 0);
+  check_update({"Backstage passes to a TAFKAL80ETC concert", 1, 51}, 0, 50);
 
   check_update({"Sulfuras, Hand of Ragnaros", 1, 80}, 1, 80);
   check_update({"Sulfuras, Hand of Ragnaros", -1, 80}, -1, 80);
+
+  check_update({"Conjured Mana Cake", 1, 50}, 0, 48);
+  check_update({"Conjured Mana Cake", 1, 1}, 0, 0);
+  check_update({"Conjured Mana Cake", 0, 50}, -1, 46);
+  check_update({"Conjured Mana Cake", 0, 3}, -1, 0);
 }
 
 TEST_CASE("Integration") {

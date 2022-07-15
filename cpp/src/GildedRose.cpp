@@ -35,14 +35,22 @@ CheeseUpdater::CheeseUpdater(const Item& item) : ItemUpdater(item) {}
 void CheeseUpdater::update() {
     item.sellIn = item.sellIn - 1;
 
-    if (item.quality < 50) {
-        item.quality = item.quality + 1;
+    if (item.sellIn >= 0) {
+        item.quality = item.quality < 50 ? item.quality + 1 : item.quality;
+    } else {
+        item.quality = item.quality < 50 ? item.quality + 2 : item.quality;
     }
+}
 
-    if (item.sellIn < 0) {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
-        }
+ConjuredUpdater::ConjuredUpdater(const Item& item) : ItemUpdater(item) {}
+
+void ConjuredUpdater::update() {
+    item.sellIn = item.sellIn - 1;
+
+    if (item.sellIn >= 0) {
+        item.quality = item.quality > 1 ? item.quality - 2 : 0;
+    } else {
+        item.quality = item.quality > 3 ? item.quality - 4 : 0;
     }
 }
 
@@ -55,14 +63,10 @@ StandardUpdater::StandardUpdater(const Item& item) : ItemUpdater(item) {}
 void StandardUpdater::update() {
     item.sellIn = item.sellIn - 1;
 
-    if (item.quality > 0) {
-        item.quality = item.quality - 1;
-    }
-
-    if (item.sellIn < 0) {
-        if (item.quality > 0) {
-            item.quality = item.quality - 1;
-        }
+    if (item.sellIn >= 0) {
+        item.quality = item.quality > 0 ? item.quality - 1 : 0;
+    } else {
+        item.quality = item.quality > 1 ? item.quality - 2 : 0;
     }
 }
 
@@ -71,30 +75,24 @@ TicketUpdater::TicketUpdater(const Item& item) : ItemUpdater(item) {}
 void TicketUpdater::update() {
     item.sellIn = item.sellIn - 1;
 
-    if (item.quality < 50) {
-        item.quality = item.quality + 1;
-
-        if (item.sellIn < 10) {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1;
-            }
-        }
-
-        if (item.sellIn < 5) {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1;
-            }
-        }
-    }
-
     if (item.sellIn < 0) {
         item.quality = 0;
+    } else if (item.sellIn < 5) {
+        item.quality = item.quality < 48 ? item.quality + 3 : 50;
+    } else if (item.sellIn < 10) {
+        item.quality = item.quality < 49 ? item.quality + 2 : 50;
+    } else {
+        item.quality = item.quality < 50 ? item.quality + 1 : 50;
     }
 }
 
 std::unique_ptr<ItemUpdater> create_item_updater(const Item& item) {
     if (item.name == "Aged Brie") {
         return std::move(std::make_unique<CheeseUpdater>(item));
+    }
+
+    if (item.name.find("Conjured") != std::string::npos) {
+        return std::move(std::make_unique<ConjuredUpdater>(item));
     }
 
     if (item.name == "Sulfuras, Hand of Ragnaros") {

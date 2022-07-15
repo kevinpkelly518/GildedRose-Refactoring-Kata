@@ -31,6 +31,13 @@ public:
   void update() override;
 };
 
+class ConjuredUpdater : public ItemUpdater {
+public:
+  ConjuredUpdater(const Item& item);
+
+  void update() override;
+};
+
 class LegendaryUpdater : public ItemUpdater {
 public:
   LegendaryUpdater(const Item& item);
