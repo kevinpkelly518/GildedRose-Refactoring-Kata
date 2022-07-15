@@ -1,14 +1,16 @@
 #include "GildedRose.hpp"
 
+#include <algorithm>
+
 
 namespace GildedRose {
 
 
 GildedRose::GildedRose(std::vector<Item>&& items) : items(std::move(items)) {}
-    
+
 void GildedRose::updateQuality() 
 {
-    for (int i = 0; i < items.size(); i++)
+    for (unsigned int i = 0; i < items.size(); i++)
     {
         if (items[i].name != "Aged Brie" && items[i].name != "Backstage passes to a TAFKAL80ETC concert")
         {
@@ -80,6 +82,14 @@ void GildedRose::updateQuality()
             }
         }
     }
+}
+
+bool GildedRose::empty() const {
+    return items.empty();
+}
+
+std::vector<Item>::const_iterator GildedRose::get_item(const std::string& name) const {
+    return std::find_if(items.begin(), items.end(), [&name](const Item& item) { return item.name == name; });
 }
 
 

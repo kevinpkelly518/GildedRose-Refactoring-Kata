@@ -14,6 +14,10 @@ public:
 
     void update();
 
+    bool empty() const;
+    std::vector<Item>::const_iterator get_item(const std::string& name) const;
+
+private:
     std::vector<Item> items;
 };
 
