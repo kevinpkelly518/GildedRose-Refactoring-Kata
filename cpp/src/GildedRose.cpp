@@ -1,7 +1,10 @@
 #include "GildedRose.hpp"
 
-GildedRose::GildedRose(vector<Item> & items) : items(items)
-{}
+
+namespace GildedRose {
+
+
+GildedRose::GildedRose(std::vector<Item>&& items) : items(std::move(items)) {}
     
 void GildedRose::updateQuality() 
 {
@@ -78,3 +81,6 @@ void GildedRose::updateQuality()
         }
     }
 }
+
+
+} // end namespace GildedRose

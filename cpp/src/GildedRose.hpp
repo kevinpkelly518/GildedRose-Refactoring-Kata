@@ -1,22 +1,21 @@
-#include <string>
+#pragma once
+
+#include "Item.hpp"
+
 #include <vector>
 
-class Item
-{
+
+namespace GildedRose {
+
+
+class GildedRose {
 public:
-    string name;
-    int sellIn;
-    int quality;
-    Item(string name, int sellIn, int quality) : name(name), sellIn(sellIn), quality(quality) 
-    {}
+    GildedRose(std::vector<Item>&& items);
+
+    void update();
+
+    std::vector<Item> items;
 };
 
-class GildedRose
-{
-public:
-    vector<Item> & items;
-    GildedRose(vector<Item> & items);
-    
-    void updateQuality();
-};
 
+} // end namespace GildedRose
