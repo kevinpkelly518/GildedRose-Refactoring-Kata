@@ -9,20 +9,23 @@ namespace {
 void check_update(const Item& item, int expect_sell_in, int expect_quality) {
   GildedRose::GildedRose gilded_rose{{item}};
 
-  gilded_rose.updateQuality();
+  gilded_rose.update();
 
-  CHECK(gilded_rose.get_item(item.name)->sellIn == expect_sell_in);
-  CHECK(gilded_rose.get_item(item.name)->quality == expect_quality);
+  CHECK(gilded_rose.get_sell_in(item.name) == expect_sell_in);
+  CHECK(gilded_rose.get_quality(item.name) == expect_quality);
 }
 
 
 } // end namespace
 
 
-TEST_CASE("Update Does Nothing") {
-  GildedRose::GildedRose gilded_rose{{}};
+namespace GildedRose {
 
-  gilded_rose.updateQuality();
+
+TEST_CASE("Update Does Nothing") {
+  GildedRose gilded_rose{{}};
+
+  gilded_rose.update();
 
   CHECK(gilded_rose.empty());
 }
@@ -59,7 +62,7 @@ TEST_CASE("Update") {
 }
 
 TEST_CASE("Integration") {
-  GildedRose::GildedRose gilded_rose{
+  GildedRose gilded_rose{
     {
       {"Item", 10, 10},
       {"Aged Brie", 5, 0},
@@ -68,21 +71,24 @@ TEST_CASE("Integration") {
     }
   };
 
-  gilded_rose.updateQuality();
-  gilded_rose.updateQuality();
-  gilded_rose.updateQuality();
-  gilded_rose.updateQuality();
-  gilded_rose.updateQuality();
+  gilded_rose.update();
+  gilded_rose.update();
+  gilded_rose.update();
+  gilded_rose.update();
+  gilded_rose.update();
 
-  CHECK(gilded_rose.get_item("Item")->sellIn == 5);
-  CHECK(gilded_rose.get_item("Item")->quality == 5);
+  CHECK(gilded_rose.get_sell_in("Item") == 5);
+  CHECK(gilded_rose.get_quality("Item") == 5);
 
-  CHECK(gilded_rose.get_item("Aged Brie")->sellIn == 0);
-  CHECK(gilded_rose.get_item("Aged Brie")->quality == 5);
+  CHECK(gilded_rose.get_sell_in("Aged Brie") == 0);
+  CHECK(gilded_rose.get_quality("Aged Brie") == 5);
 
-  CHECK(gilded_rose.get_item("Backstage passes to a TAFKAL80ETC concert")->sellIn == 2);
-  CHECK(gilded_rose.get_item("Backstage passes to a TAFKAL80ETC concert")->quality == 33);
+  CHECK(gilded_rose.get_sell_in("Backstage passes to a TAFKAL80ETC concert") == 2);
+  CHECK(gilded_rose.get_quality("Backstage passes to a TAFKAL80ETC concert") == 33);
 
-  CHECK(gilded_rose.get_item("Sulfuras, Hand of Ragnaros")->sellIn == 0);
-  CHECK(gilded_rose.get_item("Sulfuras, Hand of Ragnaros")->quality == 80);
+  CHECK(gilded_rose.get_sell_in("Sulfuras, Hand of Ragnaros") == 0);
+  CHECK(gilded_rose.get_quality("Sulfuras, Hand of Ragnaros") == 80);
 }
+
+
+} // end namespace GildedRose
