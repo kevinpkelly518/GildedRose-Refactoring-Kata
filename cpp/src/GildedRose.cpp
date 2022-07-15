@@ -1,4 +1,4 @@
-#include "GildedRose.h"
+#include "GildedRose.hpp"
 
 GildedRose::GildedRose(vector<Item> & items) : items(items)
 {}
